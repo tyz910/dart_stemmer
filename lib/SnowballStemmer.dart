@@ -191,7 +191,12 @@ class SnowballStemmer {
             break;
           case "ied":
           case "ies":
-            word = word.substring(0, word.length - 2);
+            if (word.substring(0, word.length - suffix.length).length > 1) {
+              word = word.substring(0, word.length - 2);
+            } else {
+              word = word.substring(0, word.length - 1);
+            }
+            break;
         }
       }
     }
