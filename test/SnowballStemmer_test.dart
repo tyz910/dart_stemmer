@@ -6,7 +6,7 @@ import 'dart:io';
 
 import '../lib/SnowballStemmer.dart';
 
-final testData = HashMap<String, String>();
+final testData = LinkedHashMap<String, String>();
 final testDataRegExp = RegExp(r'^([^\s]+)\s+([^\s]+)$');
 
 int passes = 0;
