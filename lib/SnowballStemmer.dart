@@ -172,6 +172,9 @@ class SnowballStemmer {
     _step0();
     _step1a();
     _step1b();
+    _step1c();
+    _step2();
+    _step3();
 
     _word = _word.replaceAll('Y', 'y');
 
@@ -290,6 +293,122 @@ class SnowballStemmer {
       }
     }
   }
+
+  void _step1c() {}
+
+  void _step2() {
+    for (var suffix in _step2Suffixes) {
+      if (_word.endsWith(suffix)) {
+        if (_r1.endsWith(suffix)) {
+          switch (suffix) {
+            case 'tional':
+              _stripEnd(_word, 2);
+              _stripEnd(_r1, 2);
+              _stripEnd(_r2, 2);
+              break;
+            case 'enci':
+            case 'anci':
+            case 'abli':
+              _word = _stripEnd(_word, 1) + 'e';
+
+              if (_r1.length >= 1) {
+                _r1 = _stripEnd(_r1, 1) + 'e';
+              } else {
+                _r1 = '';
+              }
+
+              if (_r2.length >= 1) {
+                _r2 = _stripEnd(_r2, 1) + 'e';
+              } else {
+                _r2 = '';
+              }
+              break;
+
+            case 'entli':
+              _word = _stripEnd(_word, 2);
+              _r1 = _stripEnd(_r1, 2);
+              _r2 = _stripEnd(_r2, 2);
+              break;
+
+            case 'izer':
+            case 'ization':
+              _word = _suffixReplace(_word, suffix, 'ize');
+              _r1 = _safeSuffixReplace(_r1, suffix, 'ize');
+              _r2 = _safeSuffixReplace(_r2, suffix, 'ize');
+              break;
+            case 'ational':
+            case 'ation':
+            case 'ator':
+              _word = _suffixReplace(_word, suffix, 'ate');
+              _r1 = _safeSuffixReplace(_r1, suffix, 'ate');
+              _r2 = _safeSuffixReplace(_r2, suffix, 'ate');
+              break;
+            case 'alism':
+            case 'aliti':
+            case 'alli':
+              _word = _suffixReplace(_word, suffix, 'al');
+              _r1 = _safeSuffixReplace(_r1, suffix, 'al');
+              _r2 = _safeSuffixReplace(_r2, suffix, 'al');
+              break;
+            case 'fulness':
+              _word = _stripEnd(_word, 4);
+              _r1 = _stripEnd(_word, 4);
+              _r2 = _stripEnd(_word, 4);
+              break;
+            case 'ousli':
+            case 'ousness':
+              _word = _suffixReplace(_word, suffix, 'ous');
+              _r1 = _safeSuffixReplace(_r1, suffix, 'ous');
+              _r2 = _safeSuffixReplace(_r2, suffix, 'ous');
+              break;
+            case 'iveness':
+            case 'iviti':
+              _word = _suffixReplace(_word, suffix, 'ive');
+              _r1 = _safeSuffixReplace(_r1, suffix, 'ive');
+              _r2 = _safeSuffixReplace(_r2, suffix, 'ive');
+              break;
+            case 'biliti':
+            case 'bli':
+              _word = _suffixReplace(_word, suffix, 'ble');
+              _r1 = _safeSuffixReplace(_r1, suffix, 'ble');
+              _r2 = _safeSuffixReplace(_r2, suffix, 'ble');
+              break;
+            case 'ogi':
+              // TODO(jeffbailey): Fill this in.
+              break;
+            case 'fulli':
+            case 'lessli':
+              _word = _stripEnd(_word, 2);
+              _r1 = _stripEnd(_r1, 2);
+              _r2 = _stripEnd(_r2, 2);
+              break;
+            case 'li':
+              // TODO(jeffbailey): Fill this in.
+              break;
+          }
+        }
+      }
+    }
+  }
+
+  void _step3() {
+    for (var suffix in _step3Suffixes) {
+      if (_word.endsWith(suffix)) {
+        if (_r1.endsWith(suffix)) {
+          if (suffix == "tional") {
+            _stripEnd(_word, 2);
+            _stripEnd(_r1, 2);
+            _stripEnd(_r2, 2);
+          }
+        }
+      }
+    }
+  }
+
+  String _safeSuffixReplace(String word, String oldSuffix, String newSuffix) =>
+      word.length >= oldSuffix.length
+          ? _suffixReplace(word, oldSuffix, newSuffix)
+          : "";
 
   String _suffixReplace(String word, String oldSuffix, String newSuffix) =>
       word.substring(0, word.length - oldSuffix.length) + newSuffix;
