@@ -197,7 +197,17 @@ class SnowballStemmer {
               word = word.substring(0, word.length - 1);
             }
             break;
+          case "s":
+            for (var i = 0; i < word.length - 2; i++) {
+              if (_vowels.contains(word[i])) {
+                step1a_vowel_found = true;
+              }
+            }
+            if (step1a_vowel_found) {
+              word = word.substring(0, word.length - 1);
+            }
         }
+        break;
       }
     }
   }
