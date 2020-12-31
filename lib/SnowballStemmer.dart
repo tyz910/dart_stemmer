@@ -138,6 +138,20 @@ class SnowballStemmer {
   };
 
   String stem(String word) {
+    word = word.toLowerCase();
+
+    // TODO(jeffbailey): Check stopwords
+
+    if (_specialWords.containsKey(word)) return _specialWords[word];
+
+    // Map the different apostrophe characters to a single consistent one
+    word = word
+        .replaceAll('\u2019', '\x27')
+        .replaceAll('\u2018', '\x27')
+        .replaceAll('\u201B', '\x27');
+
+    if (word[0] == '\x27') word = word.substring(1);
+
     return word;
   }
 }
