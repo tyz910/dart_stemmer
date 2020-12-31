@@ -137,75 +137,123 @@ class SnowballStemmer {
     "succeeding": "succeed",
   };
 
-  var _r1 = "";
-  var _r2 = "";
+  String _r1;
+  String _r2;
 
-  String word;
+  String _word;
 
   String stem(String origWord) {
-    word = origWord.toLowerCase();
+    _word = origWord.toLowerCase();
 
     // TODO(jeffbailey): Check stopwords
-    if (word.length <= 2) return word;
+    if (_word.length <= 2) return _word;
 
-    if (_specialWords.containsKey(word)) return _specialWords[word];
+    if (_specialWords.containsKey(_word)) return _specialWords[_word];
 
     // Map the different apostrophe characters to a single consistent one
-    word = word
+    _word = _word
         .replaceAll('\u2019', '\x27')
         .replaceAll('\u2018', '\x27')
         .replaceAll('\u201B', '\x27');
 
-    if (word.startsWith('\x27')) word = word.substring(1);
+    if (_word.startsWith('\x27')) _word = _word.substring(1);
 
-    if (word.startsWith('y')) word = 'Y' + word.substring(1);
+    if (_word.startsWith('y')) _word = 'Y' + _word.substring(1);
 
     //         for i in range(1, len(word)):
     //           if word[i - 1] in self.__vowels and word[i] == "y":
     //             word = "".join((word[:i], "Y", word[i + 1 :]))
 
+    if (false) {
+    } else {
+      _r1r2Standard();
+    }
+
     _step0();
     _step1a();
     _step1b();
 
-    word = word.replaceAll('Y', 'y');
+    _word = _word.replaceAll('Y', 'y');
 
-    return word;
+    return _word;
+  }
+
+  // Return the standard interpretations of the string regions R1 and R2.
+  //
+  // R1 is the region after the first non-vowel following a vowel,
+  // or is the null region at the end of the word if there is no
+  // such non-vowel.
+  //
+  // R2 is the region after the first non-vowel following a vowel
+  // in R1, or is the null region at the end of the word if there
+  // is no such non-vowel.
+  //
+  // A detailed description of how to define R1 and R2
+  // can be found at http://snowball.tartarus.org/texts/r1r2.html
+  void _r1r2Standard() {
+    _r1 = "";
+    _r2 = "";
+
+    // Starts on second letter.
+    for (var i = 1; i < _word.length; i++) {
+      if (!_vowels.contains(_word[i]) && _vowels.contains(_word[i - 1])) {
+        _r1 = _word.substring(i + 1);
+        break;
+      }
+    }
+
+    for (var i = 1; i < _r1.length; i++) {
+      if (!_vowels.contains(_r1[i]) && _vowels.contains(_r1[i - 1])) {
+        _r2 = _r1.substring(i + 1);
+        break;
+      }
+    }
   }
 
   void _step0() {
     for (var suffix in _step0Suffixes) {
-      if (word.endsWith(suffix)) {
-        word = word.substring(0, word.length - suffix.length);
+      if (_word.endsWith(suffix)) {
+        _word = _stripEnd(_word, suffix.length);
+        _r1 = _stripEnd(_r1, suffix.length);
+        _r2 = _stripEnd(_r2, suffix.length);
       }
     }
   }
 
   void _step1a() {
-    var step1a_vowel_found = false;
     for (var suffix in _step1aSuffixes) {
-      if (word.endsWith(suffix)) {
+      if (_word.endsWith(suffix)) {
         switch (suffix) {
           case "sses":
-            word = word.substring(0, word.length - 2);
+            _word = _stripEnd(_word, 2);
+            _r1 = _stripEnd(_r1, 2);
+            _r2 = _stripEnd(_r2, 2);
             break;
           case "ied":
           case "ies":
-            if (word.substring(0, word.length - suffix.length).length > 1) {
-              word = word.substring(0, word.length - 2);
+            if (_word.substring(0, _word.length - suffix.length).length > 1) {
+              _word = _stripEnd(_word, 2);
+              _r1 = _stripEnd(_r1, 2);
+              _r2 = _stripEnd(_r2, 2);
             } else {
-              word = word.substring(0, word.length - 1);
+              _word = _stripEnd(_word, 1);
+              _r1 = _stripEnd(_r1, 1);
+              _r2 = _stripEnd(_r2, 1);
             }
             break;
           case "s":
-            for (var i = 0; i < word.length - 2; i++) {
-              if (_vowels.contains(word[i])) {
+            var step1a_vowel_found = false;
+            for (var i = 0; i < _word.length - 2; i++) {
+              if (_vowels.contains(_word[i])) {
                 step1a_vowel_found = true;
               }
             }
             if (step1a_vowel_found) {
-              word = word.substring(0, word.length - 1);
+              _word = _stripEnd(_word, 1);
+              _r1 = _stripEnd(_r1, 1);
+              _r2 = _stripEnd(_r2, 1);
             }
+            break;
         }
         break;
       }
@@ -213,6 +261,39 @@ class SnowballStemmer {
   }
 
   void _step1b() {
-    var step1b_vowel_found = false;
+    for (var suffix in _step1bSuffixes) {
+      if (_word.endsWith(suffix)) {
+        // Interestingly, "eedly" isn't in the test data.
+        // According to the Internets, there are only 9 words
+        // in English that end in "eedly"
+        if (suffix == "eed" || suffix == "eedly") {
+          if (_r1.endsWith(suffix)) {
+            _word = _suffixReplace(_word, suffix, "ee");
+
+            if (_r1.length >= suffix.length) {
+              _r1 = _suffixReplace(_r1, suffix, "ee");
+            } else {
+              _r1 = "";
+            }
+
+            if (_r2.length >= suffix.length) {
+              _r2 = _suffixReplace(_r2, suffix, "ee");
+            } else {
+              _r2 = "";
+            }
+          }
+          break;
+        }
+      } else {
+        // TODO(jeffbailey): Implement this
+        var step1b_vowel_found = false;
+      }
+    }
   }
+
+  String _suffixReplace(String word, String oldSuffix, String newSuffix) =>
+      word.substring(0, word.length - oldSuffix.length) + newSuffix;
+
+  String _stripEnd(String word, int length) =>
+      word.length > length ? word.substring(0, word.length - length) : "";
 }
