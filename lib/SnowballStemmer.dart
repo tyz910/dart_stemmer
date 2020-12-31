@@ -164,12 +164,21 @@ class SnowballStemmer {
     //           if word[i - 1] in self.__vowels and word[i] == "y":
     //             word = "".join((word[:i], "Y", word[i + 1 :]))
 
+    _step0();
     _step1a();
     _step1b();
 
     word = word.replaceAll('Y', 'y');
 
     return word;
+  }
+
+  void _step0() {
+    for (var suffix in _step0Suffixes) {
+      if (word.endsWith(suffix)) {
+        word = word.substring(0, word.length - suffix.length);
+      }
+    }
   }
 
   void _step1a() {
