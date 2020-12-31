@@ -140,8 +140,10 @@ class SnowballStemmer {
   var _r1 = "";
   var _r2 = "";
 
-  String stem(String word) {
-    word = word.toLowerCase();
+  String word;
+
+  String stem(String origWord) {
+    word = origWord.toLowerCase();
 
     // TODO(jeffbailey): Check stopwords
     if (word.length <= 2) return word;
@@ -172,6 +174,18 @@ class SnowballStemmer {
 
   void _step1a() {
     var step1a_vowel_found = false;
+    for (var suffix in _step1aSuffixes) {
+      if (word.endsWith(suffix)) {
+        switch (suffix) {
+          case "sses":
+            word = word.substring(0, word.length - 2);
+            break;
+          case "ied":
+          case "ies":
+            word = word.substring(0, word.length - 2);
+        }
+      }
+    }
   }
 
   void _step1b() {
