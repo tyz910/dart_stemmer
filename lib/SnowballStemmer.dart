@@ -137,10 +137,14 @@ class SnowballStemmer {
     "succeeding": "succeed",
   };
 
+  var _r1 = "";
+  var _r2 = "";
+
   String stem(String word) {
     word = word.toLowerCase();
 
     // TODO(jeffbailey): Check stopwords
+    if (word.length <= 2) return word;
 
     if (_specialWords.containsKey(word)) return _specialWords[word];
 
@@ -150,8 +154,27 @@ class SnowballStemmer {
         .replaceAll('\u2018', '\x27')
         .replaceAll('\u201B', '\x27');
 
-    if (word[0] == '\x27') word = word.substring(1);
+    if (word.startsWith('\x27')) word = word.substring(1);
+
+    if (word.startsWith('y')) word = 'Y' + word.substring(1);
+
+    //         for i in range(1, len(word)):
+    //           if word[i - 1] in self.__vowels and word[i] == "y":
+    //             word = "".join((word[:i], "Y", word[i + 1 :]))
+
+    _step1a();
+    _step1b();
+
+    word = word.replaceAll('Y', 'y');
 
     return word;
+  }
+
+  void _step1a() {
+    var step1a_vowel_found = false;
+  }
+
+  void _step1b() {
+    var step1b_vowel_found = false;
   }
 }
