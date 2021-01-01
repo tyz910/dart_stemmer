@@ -295,7 +295,6 @@ class SnowballStemmer {
           }
           break;
         } else {
-          // TODO(jeffbailey): Implement this
           var step1b_vowel_found = false;
           for (var i = 1; i < _word.length - suffix.length; i++) {
             if (_vowels.contains(_word[i])) {
@@ -541,7 +540,6 @@ class SnowballStemmer {
         _word = _stripEnd(_word, 1);
       }
     }
-    // TODO(jeffbailey): Finish this.
   }
 
   String _safeSuffixReplace(String word, String oldSuffix, String newSuffix) =>
