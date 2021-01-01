@@ -329,7 +329,7 @@ class SnowballStemmer {
             }
 
             if ((_r1 == '' &&
-                    _word.length > 3 &&
+                    _word.length >= 3 &&
                     !_vowels.contains(_word[_word.length - 1]) &&
                     !"wxy".contains(_word[_word.length - 1]) &&
                     _vowels.contains(_word[_word.length - 2]) &&
