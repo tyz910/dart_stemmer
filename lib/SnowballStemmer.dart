@@ -160,11 +160,28 @@ class SnowballStemmer {
 
     if (_word.startsWith('y')) _word = 'Y' + _word.substring(1);
 
-    //         for i in range(1, len(word)):
-    //           if word[i - 1] in self.__vowels and word[i] == "y":
-    //             word = "".join((word[:i], "Y", word[i + 1 :]))
+    // Starts on second letter.
+    for (var i = 1; i < _word.length; i++) {
+      if (_vowels.contains(_word[i - 1]) && _word[i] == 'y') {
+        _word = _word.substring(0, i) + "Y" + _word.substring(i + 1);
+      }
+    }
 
-    if (false) {
+    if (_word.startsWith('gener') ||
+        _word.startsWith('commun') ||
+        _word.startsWith('arsen')) {
+      if (_word.startsWith('gener') || _word.startsWith('commun')) {
+        _r1 = _word.substring(5);
+      } else {
+        _r1 = _word.substring(6);
+      }
+
+      // Starts on second letter.
+      for (var i = 1; i < _r1.length; i++) {
+        if (!_vowels.contains(_r1[i]) && _vowels.contains(_r1[i - 1])) {
+          _r2 = _r1.substring(i + 1);
+        }
+      }
     } else {
       _r1r2Standard();
     }
@@ -205,6 +222,7 @@ class SnowballStemmer {
       }
     }
 
+    // Starts on second letter.
     for (var i = 1; i < _r1.length; i++) {
       if (!_vowels.contains(_r1[i]) && _vowels.contains(_r1[i - 1])) {
         _r2 = _r1.substring(i + 1);
@@ -395,10 +413,17 @@ class SnowballStemmer {
     for (var suffix in _step3Suffixes) {
       if (_word.endsWith(suffix)) {
         if (_r1.endsWith(suffix)) {
-          if (suffix == "tional") {
-            _stripEnd(_word, 2);
-            _stripEnd(_r1, 2);
-            _stripEnd(_r2, 2);
+          switch (suffix) {
+            case "tional":
+              _stripEnd(_word, 2);
+              _stripEnd(_r1, 2);
+              _stripEnd(_r2, 2);
+              break;
+            case "ational":
+              _word = _suffixReplace(_word, suffix, 'ate');
+              _r1 = _safeSuffixReplace(_r1, suffix, 'ate');
+              _r2 = _safeSuffixReplace(_r2, suffix, 'ate');
+              break;
           }
         }
       }
