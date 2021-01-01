@@ -289,19 +289,9 @@ class SnowballStemmer {
         // in English that end in "eedly"
         if (suffix == "eed" || suffix == "eedly") {
           if (_r1.endsWith(suffix)) {
-            _word = _suffixReplace(_word, suffix, "ee");
-
-            if (_r1.length >= suffix.length) {
-              _r1 = _suffixReplace(_r1, suffix, "ee");
-            } else {
-              _r1 = "";
-            }
-
-            if (_r2.length >= suffix.length) {
-              _r2 = _suffixReplace(_r2, suffix, "ee");
-            } else {
-              _r2 = "";
-            }
+            _word = _suffixReplace(_word, suffix, 'ee');
+            _r1 = _safeSuffixReplace(_r1, suffix, 'ee');
+            _r2 = _safeSuffixReplace(_r2, suffix, 'ee');
           }
           break;
         }
