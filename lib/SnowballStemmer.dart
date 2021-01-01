@@ -414,8 +414,8 @@ class SnowballStemmer {
               break;
             case 'fulness':
               _word = _stripEnd(_word, 4);
-              _r1 = _stripEnd(_word, 4);
-              _r2 = _stripEnd(_word, 4);
+              _r1 = _stripEnd(_r1, 4);
+              _r2 = _stripEnd(_r2, 4);
               break;
             case 'ousli':
             case 'ousness':
