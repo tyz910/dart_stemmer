@@ -477,6 +477,11 @@ class SnowballStemmer {
               _r1 = _safeSuffixReplace(_r1, suffix, 'ate');
               _r2 = _safeSuffixReplace(_r2, suffix, 'ate');
               break;
+            case "alize":
+              _word = _stripEnd(_word, 3);
+              _r1 = _stripEnd(_r1, 3);
+              _r2 = _stripEnd(_r2, 3);
+              break;
             case "icate":
             case "iciti":
             case "ical":
