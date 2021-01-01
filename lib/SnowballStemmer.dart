@@ -295,10 +295,57 @@ class SnowballStemmer {
             _r2 = _safeSuffixReplace(_r2, suffix, 'ee');
           }
           break;
+        } else {
+          // TODO(jeffbailey): Implement this
+          var step1b_vowel_found = false;
+          for (var i = 1; i < _word.length - suffix.length; i++) {
+            if (_vowels.contains(_word[i])) {
+              step1b_vowel_found = true;
+              break;
+            }
+          }
+
+          if (step1b_vowel_found) {
+            _word = _stripEnd(_word, suffix.length);
+            _r1 = _stripEnd(_r1, suffix.length);
+            _r2 = _stripEnd(_r2, suffix.length);
+
+            if (_word.endsWith("at") ||
+                _word.endsWith("bl") ||
+                _word.endsWith("iz")) {
+              _word = _word + "e";
+              _r1 = _r1 + "e";
+
+              if (_word.length > 5 || _r1.length >= 3) {
+                _r2 = _r2 + "e";
+              }
+              return;
+            }
+            for (var dbl in _doubleConsonants) {
+              if (_word.endsWith(dbl)) {
+                _word = _stripEnd(_word, 1);
+                _r1 = _stripEnd(_r1, 1);
+                _r2 = _stripEnd(_r2, 1);
+                return;
+              }
+            }
+
+            if ((_r1 == '' &&
+                    _word.length > 3 &&
+                    !_vowels.contains(_word[_word.length - 1]) &&
+                    !"wxy".contains(_word[_word.length - 1]) &&
+                    _vowels.contains(_word[_word.length - 2]) &&
+                    !_vowels.contains(_word[_word.length - 2])) ||
+                (_r1 == '' &&
+                    _word.length == 2 &&
+                    _vowels.contains(_word[0]) &&
+                    !_vowels.contains(_word[1]))) {
+              _word = _word + 'e';
+              if (_r1.length > 0) _r1 = _r1 + 'e';
+              if (_r2.length > 0) _r2 = _r2 + 'e';
+            }
+          }
         }
-      } else {
-        // TODO(jeffbailey): Implement this
-        var step1b_vowel_found = false;
       }
     }
   }
@@ -319,9 +366,9 @@ class SnowballStemmer {
         if (_r1.endsWith(suffix)) {
           switch (suffix) {
             case 'tional':
-              _stripEnd(_word, 2);
-              _stripEnd(_r1, 2);
-              _stripEnd(_r2, 2);
+              _word = _stripEnd(_word, 2);
+              _r1 = _stripEnd(_r1, 2);
+              _r2 = _stripEnd(_r2, 2);
               break;
             case 'enci':
             case 'anci':
@@ -414,9 +461,9 @@ class SnowballStemmer {
         if (_r1.endsWith(suffix)) {
           switch (suffix) {
             case "tional":
-              _stripEnd(_word, 2);
-              _stripEnd(_r1, 2);
-              _stripEnd(_r2, 2);
+              _word = _stripEnd(_word, 2);
+              _r1 = _stripEnd(_r1, 2);
+              _r2 = _stripEnd(_r2, 2);
               break;
             case "ational":
               _word = _suffixReplace(_word, suffix, 'ate');
