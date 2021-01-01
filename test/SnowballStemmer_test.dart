@@ -12,8 +12,9 @@ final testDataRegExp = RegExp(r'^([^\s]+)\s+([^\s]+)$');
 int passes = 0;
 int fails = 0;
 
-main() async {
-  await loadTestData();
+main() {
+  var lines = loadTestData();
+  processLines(lines);
 
   var stemmer = SnowballStemmer();
 
@@ -31,9 +32,9 @@ main() async {
   print("fails: " + fails.toString());
 }
 
-Future<void> loadTestData() async {
+List<String> loadTestData() {
   File data = new File("snowball_test.txt");
-  await data.readAsLines().then(processLines);
+  return data.readAsLinesSync();
 }
 
 void processLines(List<String> lines) {
