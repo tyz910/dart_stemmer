@@ -333,7 +333,7 @@ class SnowballStemmer {
                     !_vowels.contains(_word[_word.length - 1]) &&
                     !"wxy".contains(_word[_word.length - 1]) &&
                     _vowels.contains(_word[_word.length - 2]) &&
-                    !_vowels.contains(_word[_word.length - 2])) ||
+                    !_vowels.contains(_word[_word.length - 3])) ||
                 (_r1 == '' &&
                     _word.length == 2 &&
                     _vowels.contains(_word[0]) &&
