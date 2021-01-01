@@ -331,7 +331,7 @@ class SnowballStemmer {
             if ((_r1 == '' &&
                     _word.length >= 3 &&
                     !_vowels.contains(_word[_word.length - 1]) &&
-                    !"wxy".contains(_word[_word.length - 1]) &&
+                    !"wxY".contains(_word[_word.length - 1]) &&
                     _vowels.contains(_word[_word.length - 2]) &&
                     !_vowels.contains(_word[_word.length - 3])) ||
                 (_r1 == '' &&
@@ -534,7 +534,7 @@ class SnowballStemmer {
     if (_r1.endsWith("e")) {
       if (_word.length >= 4 &&
           (_vowels.contains(_word[_word.length - 2]) ||
-              "wxy".contains(_word[_word.length - 2]) ||
+              "wxY".contains(_word[_word.length - 2]) ||
               !_vowels.contains(_word[_word.length - 3]) ||
               _vowels.contains(_word[_word.length - 4]))) {
         _word = _stripEnd(_word, 1);
