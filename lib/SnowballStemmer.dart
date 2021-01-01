@@ -168,7 +168,7 @@ class SnowballStemmer {
     if (_word.startsWith('gener') ||
         _word.startsWith('commun') ||
         _word.startsWith('arsen')) {
-      if (_word.startsWith('gener') || _word.startsWith('commun')) {
+      if (_word.startsWith('gener') || _word.startsWith('arsen')) {
         _r1 = _word.substring(5);
       } else {
         _r1 = _word.substring(6);
