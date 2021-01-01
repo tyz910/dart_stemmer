@@ -193,6 +193,7 @@ class SnowballStemmer {
     _step2();
     _step3();
     _step4();
+    _step5();
 
     _word = _word.replaceAll('Y', 'y');
 
@@ -514,6 +515,14 @@ class SnowballStemmer {
         break;
       }
     }
+  }
+
+  void _step5() {
+    if (_r2.endsWith("l") && _word[_word.length - 2] == "l") {
+      _word = _stripEnd(_word, 1);
+      return;
+    }
+    // TODO(jeffbailey): Finish this.
   }
 
   String _safeSuffixReplace(String word, String oldSuffix, String newSuffix) =>
