@@ -18,9 +18,11 @@ main() async {
   var stemmer = SnowballStemmer();
 
   for (var key in testData.keys) {
-    if (stemmer.stem(key) == testData[key]) {
+    var result = stemmer.stem(key);
+    if (result == testData[key]) {
       passes++;
     } else {
+      print("Original: ${key}, Expected: ${testData[key]}, Got: ${result}");
       fails++;
     }
   }
