@@ -422,6 +422,25 @@ class SnowballStemmer {
               _r1 = _safeSuffixReplace(_r1, suffix, 'ate');
               _r2 = _safeSuffixReplace(_r2, suffix, 'ate');
               break;
+            case "icate":
+            case "iciti":
+            case "ical":
+              _word = _suffixReplace(_word, suffix, 'ic');
+              _r1 = _safeSuffixReplace(_r1, suffix, 'ic');
+              _r2 = _safeSuffixReplace(_r2, suffix, 'ic');
+              break;
+            case "ful":
+            case "ness":
+              _word = _stripEnd(_word, suffix.length);
+              _r1 = _stripEnd(_r1, suffix.length);
+              _r2 = _stripEnd(_r2, suffix.length);
+              break;
+            case "ative":
+              if (_r2.endsWith(suffix)) {
+                _word = _stripEnd(_word, suffix.length);
+                _r1 = _stripEnd(_r1, suffix.length);
+                _r2 = _stripEnd(_r2, suffix.length);
+              }
           }
         }
       }
