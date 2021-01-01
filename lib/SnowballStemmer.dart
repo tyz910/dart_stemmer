@@ -296,7 +296,7 @@ class SnowballStemmer {
           break;
         } else {
           var step1b_vowel_found = false;
-          for (var i = 1; i < _word.length - suffix.length; i++) {
+          for (var i = 0; i < _word.length - suffix.length; i++) {
             if (_vowels.contains(_word[i])) {
               step1b_vowel_found = true;
               break;
