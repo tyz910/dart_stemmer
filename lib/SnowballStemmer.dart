@@ -92,8 +92,6 @@ class SnowballStemmer {
     "ic",
   ];
 
-  final _step5Suffixes = ["e", "l"];
-
   final Map<String, String> _specialWords = {
     "skis": "ski",
     "skies": "sky",
@@ -439,7 +437,11 @@ class SnowballStemmer {
               _r2 = _safeSuffixReplace(_r2, suffix, 'ble');
               break;
             case 'ogi':
-              // TODO(jeffbailey): Fill this in.
+              if (_word[_word.length - 4] == "l") {
+                _word = _stripEnd(_word, 1);
+                _r1 = _stripEnd(_r1, 1);
+                _r2 = _stripEnd(_r2, 1);
+              }
               break;
             case 'fulli':
             case 'lessli':
@@ -448,7 +450,11 @@ class SnowballStemmer {
               _r2 = _stripEnd(_r2, 2);
               break;
             case 'li':
-              // TODO(jeffbailey): Fill this in.
+              if (_liEnding.contains(_word[_word.length - 3])) {
+                _word = _stripEnd(_word, 2);
+                _r1 = _stripEnd(_r1, 2);
+                _r2 = _stripEnd(_r2, 2);
+              }
               break;
           }
         }
