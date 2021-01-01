@@ -459,6 +459,7 @@ class SnowballStemmer {
               break;
           }
         }
+        return;
       }
     }
   }
