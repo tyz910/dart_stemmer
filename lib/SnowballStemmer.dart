@@ -302,7 +302,15 @@ class SnowballStemmer {
     }
   }
 
-  void _step1c() {}
+  void _step1c() {
+    if (_word.length > 2 &&
+        "yY".contains(_word[_word.length - 1]) &&
+        !_vowels.contains(_word[_word.length - 2])) {
+      _word = _suffixReplaceLen(_word, 1, 'i');
+      _r1 = _safeSuffixReplaceLen(_r1, 1, 'i');
+      _r2 = _safeSuffixReplaceLen(_r2, 1, 'i');
+    }
+  }
 
   void _step2() {
     for (var suffix in _step2Suffixes) {
@@ -425,8 +433,18 @@ class SnowballStemmer {
           ? _suffixReplace(word, oldSuffix, newSuffix)
           : "";
 
+  String _safeSuffixReplaceLen(
+          String word, int oldSuffixLength, String newSuffix) =>
+      word.length >= oldSuffixLength
+          ? _suffixReplaceLen(word, oldSuffixLength, newSuffix)
+          : "";
+
   String _suffixReplace(String word, String oldSuffix, String newSuffix) =>
-      word.substring(0, word.length - oldSuffix.length) + newSuffix;
+      _suffixReplaceLen(word, oldSuffix.length, newSuffix);
+
+  String _suffixReplaceLen(
+          String word, int oldSuffixLength, String newSuffix) =>
+      word.substring(0, word.length - oldSuffixLength) + newSuffix;
 
   String _stripEnd(String word, int length) =>
       word.length > length ? word.substring(0, word.length - length) : "";
