@@ -192,6 +192,7 @@ class SnowballStemmer {
     _step1c();
     _step2();
     _step3();
+    _step4();
 
     _word = _word.replaceAll('Y', 'y');
 
@@ -443,6 +444,27 @@ class SnowballStemmer {
               }
           }
         }
+      }
+    }
+  }
+
+  void _step4() {
+    for (var suffix in _step4Suffixes) {
+      if (_word.endsWith(suffix)) {
+        if (_r2.endsWith(suffix)) {
+          if (suffix == "ion") {
+            if ("st".contains(_word[_word.length - 4])) {
+              _word = _stripEnd(_word, 3);
+              _r1 = _stripEnd(_r1, 3);
+              _r2 = _stripEnd(_r2, 3);
+            }
+          } else {
+            _word = _stripEnd(_word, suffix.length);
+            _r1 = _stripEnd(_r1, suffix.length);
+            _r2 = _stripEnd(_r2, suffix.length);
+          }
+        }
+        break;
       }
     }
   }
