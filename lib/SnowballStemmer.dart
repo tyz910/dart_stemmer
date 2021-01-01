@@ -178,6 +178,7 @@ class SnowballStemmer {
       for (var i = 1; i < _r1.length; i++) {
         if (!_vowels.contains(_r1[i]) && _vowels.contains(_r1[i - 1])) {
           _r2 = _r1.substring(i + 1);
+          break;
         }
       }
     } else {
