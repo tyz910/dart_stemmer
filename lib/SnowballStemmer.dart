@@ -522,6 +522,19 @@ class SnowballStemmer {
       _word = _stripEnd(_word, 1);
       return;
     }
+    if (_r2.endsWith("e")) {
+      _word = _stripEnd(_word, 1);
+      return;
+    }
+    if (_r1.endsWith("e")) {
+      if (_word.length >= 4 &&
+          (_vowels.contains(_word[_word.length - 2]) ||
+              "wxy".contains(_word[_word.length - 2]) ||
+              !_vowels.contains(_word[_word.length - 3]) ||
+              _vowels.contains(_word[_word.length - 4]))) {
+        _word = _stripEnd(_word, 1);
+      }
+    }
     // TODO(jeffbailey): Finish this.
   }
 
