@@ -403,7 +403,7 @@ class SnowballStemmer {
             case 'ator':
               _word = _suffixReplace(_word, suffix, 'ate');
               _r1 = _safeSuffixReplace(_r1, suffix, 'ate');
-              _r2 = _safeSuffixReplace(_r2, suffix, 'ate');
+              _r2 = _safeSuffixReplace(_r2, suffix, 'ate', 'e');
               break;
             case 'alism':
             case 'aliti':
@@ -427,7 +427,7 @@ class SnowballStemmer {
             case 'iviti':
               _word = _suffixReplace(_word, suffix, 'ive');
               _r1 = _safeSuffixReplace(_r1, suffix, 'ive');
-              _r2 = _safeSuffixReplace(_r2, suffix, 'ive');
+              _r2 = _safeSuffixReplace(_r2, suffix, 'ive', 'e');
               break;
             case 'biliti':
             case 'bli':
@@ -542,10 +542,11 @@ class SnowballStemmer {
     }
   }
 
-  String _safeSuffixReplace(String word, String oldSuffix, String newSuffix) =>
+  String _safeSuffixReplace(String word, String oldSuffix, String newSuffix,
+          [String failureSuffix = '']) =>
       word.length >= oldSuffix.length
           ? _suffixReplace(word, oldSuffix, newSuffix)
-          : "";
+          : failureSuffix;
 
   String _safeSuffixReplaceLen(
           String word, int oldSuffixLength, String newSuffix) =>
